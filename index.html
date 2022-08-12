@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="header">
+        <div class="btn" id="backBtn">Back</div>
+        <div id="monthAndYear">
+            <div id="month"></div>
+            <div id="year"></div>
+        </div>
+        <div class="btn" id="nextBtn">Next</div>
+    </div>  
+
+    <div id="container">
+        <div id="gridContainer">
+            <div id="weekdays">
+                <div id="weekname">MON</div>
+                <div id="weekname">TUE</div>
+                <div id="weekname">WED</div>
+                <div id="weekname">THU</div>
+                <div id="weekname">FRI</div>
+                <div id="weekname">SAT</div>
+                <div id="weekname">SUN</div>
+            </div>
+
+            <div id="days"></div>
+        </div>
+    </div>
+
+    <div id="eventContainer">
+        <div id="eventHeader">
+            Events
+        </div>
+
+        <div id="addEvent">
+            <input type="text" id="addEventInput" name="add Events" placeholder="type your event">
+            <button id="addEventBtn">Add</button>
+        </div>
+        <div id="events"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
