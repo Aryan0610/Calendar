@@ -7,17 +7,23 @@
     <title>Calendar</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="header">
-        <div class="btn" id="backBtn">Back</div>
-        <div id="monthAndYear">
-            <div id="month"></div>
-            <div id="year"></div>
+<body>  
+    <div id="calendarContainer">
+        <div id="headerContainer">
+            <div id="monthAndYear">
+                <div id="month"></div>
+                <div id="year"></div>
+            </div>
+            <div id="btnContainer">
+                <div class="btn" id="backBtn">
+                    <img src="Images/Left arrow.svg" alt="Back">
+                </div>
+                <div class="btn" id="nextBtn">
+                    <img src="Images/Right arrow.svg" alt="Next">
+                </div>         
+            </div>   
         </div>
-        <div class="btn" id="nextBtn">Next</div>
-    </div>  
 
-    <div id="container">
         <div id="gridContainer">
             <div id="weekdays">
                 <div id="weekname">MON</div>
@@ -38,9 +44,30 @@
             Events
         </div>
 
+        <div id="todaysEventsContainer">
+            <div id="eventContent">
+                Todays Events,
+                <div id="todaysEvent">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="upcomingEventsContainer">
+            <div id="eventContent">
+                <div id=upcomingEventHeader">
+                    Upcoming Events,
+                </div>
+                <div id="upcomingEvents">
+
+                </div>
+            </div>
+        </div>
+
         <div id="addEvent">
             <input type="text" id="addEventInput" name="add Events" placeholder="type your event">
-            <button id="addEventBtn">Add</button>
+            <button id="addEventBtn">
+            </button>
         </div>
         <div id="events"></div>
     </div>

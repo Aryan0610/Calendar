@@ -1,15 +1,13 @@
 let monthNav = 0
 let selectedDayInt = 0 
 let eventDay = 0
-//let eventToBeAdded = []
 const calendar = document.getElementById('days')
 
 let seletedDayDiv = 0
 
 const weekdays = ['Monday', 'Tuesday', 'Wendnesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-//let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : []
-
+//loads the calendar grid
 function load() {
     const date = new Date()
 
@@ -17,8 +15,8 @@ function load() {
         date.setMonth(new Date().getMonth()+monthNav)
     }
 
-    let dt = date.getDate()
-    let day = date.getDay()
+    /*let dt = date.getDate()
+    let day = date.getDay()*/
     let month = date.getMonth()
     let year = date.getFullYear()
 
@@ -55,14 +53,14 @@ function load() {
             }
 
             daySquare.addEventListener('click', ()=>
-             selectedDay(i-paddingDays, dayString))//, eventFunc(dayString))
+             selectedDay(i-paddingDays, dayString))
         } else {
             daySquare.classList.add('padding')
         }
 
         calendar.appendChild(daySquare)
     }
-
+    eventsOfTheMonthFunc()
 }
 
 function selectedDay(selectedDayInt, dayString) {
@@ -80,40 +78,179 @@ function selectedDay(selectedDayInt, dayString) {
     }
 
     eventDay = dayString
-    eventFunc(dayString)
+    //eventFunc(dayString)
 }
 
 //adds events to the event menu
 function eventFunc(dayString) {
-    const calendarEvents = JSON.parse(localStorage.getItem('events'))
+    console.log('works')
+    const localStorageEvents = JSON.parse(localStorage.getItem('events'))
     let eventsForDay = []
 
-    for(i=0; i<calendarEvents.length; i++) {
-        if(calendarEvents[i].date == dayString) {
-            eventsForDay.push(calendarEvents[i])
+    document.getElementById('eventHeader').innerText = 'Events'
+
+    for(i=0; i<localStorageEvents.length; i++) {
+        if(localStorageEvents[i].date == dayString) {   
+            eventsForDay.push(localStorageEvents[i])
         }
     }
 
-    //shows existing events
-    document.getElementById('events').innerText = ''
-    for(i=0; i<eventsForDay.length; i++) {
-        const eventDiv = document.createElement('div')
-        eventDiv.classList.add('eventContent')
-        eventDiv.innerText = eventsForDay[i].title
+    const date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth()+1
+    let year = date.getFullYear()
 
-        const deleteEvent = document.createElement('button')
-        deleteEvent.classList.add('deleteEventBtn')
-        deleteEvent.innerText = 'remove'
-        if(deleteEvent){
-            let eventNum = i
-            deleteEvent.addEventListener('click', ()=> {
-                removeEventBtn(eventsForDay[eventNum])
+    //if month changes
+    if(monthNav != 0) {
+        month = month + monthNav;
+    }
+
+    let currentDay = `${day}/${month}/${year}`
+
+    let todaysEvent = []
+    let upcomingEvents = []
+
+    const existingEventDiv = document.querySelectorAll('.eventItem')
+    for(i=0; i<existingEventDiv.length; i++) {
+        existingEventDiv[i].remove()
+    }
+
+    //adds todays events to the array 
+    for(i=0; i<localStorageEvents.length; i++) {
+        if(localStorageEvents[i].date == currentDay) {
+            if(todaysEvent) {
+                todaysEvent.push({
+                    date: localStorageEvents[i].date,
+                    title: localStorageEvents[i].title
+                })
+            } else {
+                todaysEvent = [{
+                    date: localStorageEvents[i].date,
+                    title: localStorageEvents[i].title
+                }]
+            }
+        }
+    }
+
+    //adds today events into the from the array to the page
+    for(i=0; i<todaysEvent.length; i++) {
+        const todaysEventDIv = document.createElement('div')
+        todaysEventDIv.classList.add('eventItem')
+        document.getElementById('todaysEvent').appendChild(todaysEventDIv)
+
+        const todaysEventDateDiv = document.createElement('div')
+        todaysEventDateDiv.innerText = todaysEvent[i].date
+        //todaysEventDIv.appendChild(todaysEventDateDiv)
+
+        const todaysEventTitleDiv = document.createElement('div')
+        todaysEventTitleDiv.innerText = todaysEvent[i].title
+        todaysEventDIv.appendChild(todaysEventTitleDiv)
+
+        const deleteEventBtn = document.createElement('button')
+        //deleteEventBtn.innerText = 'delete'
+        deleteEventBtn.classList.add('deleteBtn')
+        let todaysEventInt = i
+        deleteEventBtn.addEventListener('click', function() {
+            removeEventBtn(todaysEvent[todaysEventInt].date, todaysEvent[todaysEventInt].title)
+        })
+        todaysEventDIv.appendChild(deleteEventBtn)
+    }
+    
+    //adds upcoming events to the array
+    let eventsOfTheMonth = eventsOfTheMonthFunc()
+    
+    for(i=0; i<eventsOfTheMonth.length; i++) {
+        if(`${eventsOfTheMonth[i].day}/${eventsOfTheMonth[i].month}/${eventsOfTheMonth[i].year}` > currentDay) {
+            let upcomingEventDate = `${eventsOfTheMonth[i].day}/${eventsOfTheMonth[i].month}/${eventsOfTheMonth[i].year}`
+            let upcomingEventTitle
+            for(j=0; j<localStorageEvents.length; j++) {
+                if(localStorageEvents[j].date == `${eventsOfTheMonth[i].day}/${eventsOfTheMonth[i].month}/${eventsOfTheMonth[i].year}`) {
+                    upcomingEventTitle = localStorageEvents[j].title
+                }
+            }
+
+            upcomingEvents.push({
+                date: upcomingEventDate,
+                title: upcomingEventTitle
             })
         }
-
-        eventDiv.appendChild(deleteEvent)
-        document.getElementById('events').appendChild(eventDiv)
     }
+
+
+    for(i=0; i<upcomingEvents.length; i++) {
+        const upcomingEventDiv = document.createElement('div')
+        upcomingEventDiv.classList.add('eventItem')
+        //upcomingEventDiv.innerText = upcomingEvents[i].title
+
+        document.getElementById('upcomingEvents').appendChild(upcomingEventDiv)
+
+        const upcomingEventDateDiv = document.createElement('div')
+        upcomingEventDateDiv.innerText = upcomingEvents[i].date
+        //upcomingEventDiv.appendChild(upcomingEventDateDiv)
+
+        const upcomingEventTitleDiv = document.createElement('div')
+        upcomingEventTitleDiv.innerText = upcomingEvents[i].title   
+        upcomingEventDiv.appendChild(upcomingEventTitleDiv)
+
+        const deleteEventBtn = document.createElement('button')
+        //deleteEventBtn.innerText = 'delete'
+        deleteEventBtn.classList.add('deleteBtn')
+        let upcomingEventInt = i
+        deleteEventBtn.addEventListener('click', function() {
+            removeEventBtn(upcomingEvents[upcomingEventInt].date, upcomingEvents[upcomingEventInt].title)
+        })
+        upcomingEventDiv.appendChild(deleteEventBtn)
+    }
+}
+
+//specifies which days of the month have events and returns an array with the events of the month
+function eventsOfTheMonthFunc() {
+    const localStorageEvents = JSON.parse(localStorage.getItem('events'))
+    const dayOfTheMonth = document.querySelectorAll('.day')
+    let eventsOfTheMonth = []
+
+
+    const date = new Date()
+    let month = date.getMonth()+1
+    let year = date.getFullYear()
+
+    //if month changes
+    if(monthNav != 0) {
+        month = month + monthNav;
+    }
+
+    //removing events from from the class name of the days
+    for(i=0; i<dayOfTheMonth.length; i++) {
+        if(dayOfTheMonth[i].classList.contains('eventOfTheMonth')) {
+            dayOfTheMonth[i].classList.remove('eventOfTheMonth')
+        }
+    }
+
+    //adding events in the class name of the days
+    for(i=0; i<dayOfTheMonth.length; i++) {
+        for(j=0; j<localStorageEvents.length; j++) {
+            if((`${dayOfTheMonth[i].innerText}/${month}/${year}`) === localStorageEvents[j].date) {
+                dayOfTheMonth[i].classList.add('eventOfTheMonth')
+
+                //adding events of the current month into the array
+                if(eventsOfTheMonth) {
+                    eventsOfTheMonth.push({
+                        day: dayOfTheMonth[i].innerText,
+                        month: month,
+                        year: year
+                    })
+                } else {
+                    eventsOfTheMonth = [{
+                        day: dayOfTheMonth[i].innerText,
+                        month: month,
+                        year: year
+                    }]
+                }
+            }
+        }
+    }  
+    
+    return eventsOfTheMonth
 }
 
 //adds events to the local storage
@@ -136,12 +273,11 @@ function addEventBtn() {
     document.getElementById('addEventInput').value = ''
 }
 
-//removes event from the local storage
-function removeEventBtn(eventToBeDelted) {
+function removeEventBtn(date, title) {
     let localStorageEvents = JSON.parse(localStorage.getItem('events'))
 
-    eventToBeDeltedDate = eventToBeDelted.date
-    eventToBeDeltedTitle = eventToBeDelted.title
+    eventToBeDeltedDate = date
+    eventToBeDeltedTitle = title
 
     for(i=0; i<localStorageEvents.length; i++) {
         if(localStorageEvents[i].date == eventToBeDeltedDate 
@@ -168,10 +304,10 @@ function initButtons() {
     document.getElementById('addEventBtn').addEventListener('click', ()=> {
         addEventBtn()
         eventFunc(eventDay)
-        //load()
     })
 }
 
+//initial Date
 function initDate() {
     const date = new Date()
     const dt = date.getDate()
@@ -183,5 +319,6 @@ function initDate() {
 }
 
 load()
+eventFunc(eventDay)
 initButtons()
 initDate()
