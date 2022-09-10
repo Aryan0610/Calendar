@@ -15,8 +15,6 @@ function load() {
         date.setMonth(new Date().getMonth()+monthNav)
     }
 
-    /*let dt = date.getDate()
-    let day = date.getDay()*/
     let month = date.getMonth()
     let year = date.getFullYear()
 
@@ -83,15 +81,16 @@ function selectedDay(selectedDayInt, dayString) {
 
 //adds events to the event menu
 function eventFunc(dayString) {
-    console.log('works')
     const localStorageEvents = JSON.parse(localStorage.getItem('events'))
     let eventsForDay = []
 
     document.getElementById('eventHeader').innerText = 'Events'
 
-    for(i=0; i<localStorageEvents.length; i++) {
-        if(localStorageEvents[i].date == dayString) {   
-            eventsForDay.push(localStorageEvents[i])
+    if(localStorageEvents != null) {
+        for(i=0; i<localStorageEvents.length; i++) {
+            if(localStorageEvents[i].date == dayString) {   
+                eventsForDay.push(localStorageEvents[i])
+            }
         }
     }
 
@@ -116,18 +115,20 @@ function eventFunc(dayString) {
     }
 
     //adds todays events to the array 
-    for(i=0; i<localStorageEvents.length; i++) {
-        if(localStorageEvents[i].date == currentDay) {
-            if(todaysEvent) {
-                todaysEvent.push({
-                    date: localStorageEvents[i].date,
-                    title: localStorageEvents[i].title
-                })
-            } else {
-                todaysEvent = [{
-                    date: localStorageEvents[i].date,
-                    title: localStorageEvents[i].title
-                }]
+    if(localStorageEvents != null) {
+        for(i=0; i<localStorageEvents.length; i++) {
+            if(localStorageEvents[i].date == currentDay) {
+                if(todaysEvent) {
+                    todaysEvent.push({
+                        date: localStorageEvents[i].date,
+                        title: localStorageEvents[i].title
+                    })
+                } else {
+                    todaysEvent = [{
+                        date: localStorageEvents[i].date,
+                        title: localStorageEvents[i].title
+                    }]
+                }
             }
         }
     }
@@ -206,9 +207,9 @@ function eventFunc(dayString) {
 //specifies which days of the month have events and returns an array with the events of the month
 function eventsOfTheMonthFunc() {
     const localStorageEvents = JSON.parse(localStorage.getItem('events'))
+
     const dayOfTheMonth = document.querySelectorAll('.day')
     let eventsOfTheMonth = []
-
 
     const date = new Date()
     let month = date.getMonth()+1
@@ -228,23 +229,25 @@ function eventsOfTheMonthFunc() {
 
     //adding events in the class name of the days
     for(i=0; i<dayOfTheMonth.length; i++) {
-        for(j=0; j<localStorageEvents.length; j++) {
-            if((`${dayOfTheMonth[i].innerText}/${month}/${year}`) === localStorageEvents[j].date) {
-                dayOfTheMonth[i].classList.add('eventOfTheMonth')
-
-                //adding events of the current month into the array
-                if(eventsOfTheMonth) {
-                    eventsOfTheMonth.push({
-                        day: dayOfTheMonth[i].innerText,
-                        month: month,
-                        year: year
-                    })
-                } else {
-                    eventsOfTheMonth = [{
-                        day: dayOfTheMonth[i].innerText,
-                        month: month,
-                        year: year
-                    }]
+        if(localStorageEvents != null) {
+            for(j=0; j<localStorageEvents.length; j++) {
+                if((`${dayOfTheMonth[i].innerText}/${month}/${year}`) === localStorageEvents[j].date) {
+                    dayOfTheMonth[i].classList.add('eventOfTheMonth')
+    
+                    //adding events of the current month into the array
+                    if(eventsOfTheMonth) {
+                        eventsOfTheMonth.push({
+                            day: dayOfTheMonth[i].innerText,
+                            month: month,
+                            year: year
+                        })
+                    } else {
+                        eventsOfTheMonth = [{
+                            day: dayOfTheMonth[i].innerText,
+                            month: month,
+                            year: year
+                        }]
+                    }
                 }
             }
         }
