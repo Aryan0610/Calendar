@@ -47,6 +47,18 @@ body {
     color: #AAAAAA;
 }
 
+#timeContainer {
+    padding: 0px 10px 0px 0px;
+
+    font-size: 25px;
+    font-weight: 600;
+
+    display: flex;
+    justify-content: right;
+
+    color: #AAAAAA;
+}
+
 #btnContainer {
     display: flex;
 }
@@ -126,6 +138,7 @@ body {
 .selectedDay {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
+
 
 /*event container*/
 #eventContainer {

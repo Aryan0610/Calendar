@@ -321,6 +321,21 @@ function initDate() {
     selectedDay(dt, eventDay)
 }
 
+//clock in js
+setInterval(showTime, 1000)
+function showTime() {
+    const date = new Date()
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+
+    if(hours > 12) {
+        hours -= 12
+    }
+
+    document.getElementById('hours').innerText = `${hours}:`
+    document.getElementById('minutes').innerText = minutes
+}
+
 load()
 eventFunc(eventDay)
 initButtons()
