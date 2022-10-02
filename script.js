@@ -77,7 +77,6 @@ function selectedDay(selectedDayInt, dayString) {
     }
 
     eventDay = dayString
-    //eventFunc(dayString)
 }
 
 //adds events to the event menu

@@ -1,4 +1,4 @@
-Link: aryan0610.github.io/Calendar
+Link: scalendar.tk
 
 This is a calendar website with a events mangaer
 
