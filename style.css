@@ -223,8 +223,44 @@ body {
     border-radius: 5px;
 }
 
+.title { 
+    grid-area: title;
+    font-weight: bold;
+}
+.date { 
+    grid-area: date;
+    font-weight: 50;
+}
+.deleteBtn {
+    grid-area: deleteBtn;
+
+    background-image: url('Images/deleteBtn.svg');
+    background-size: cover;
+    background-color: #424242;
+    
+    width: 20px;
+    height: 25px;
+
+    display: flex;
+    justify-content: space-around;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    border: none;
+}
+
+.deleteBtn:hover {
+    background-image: url('Images/deleteBtnHover.svg');
+}
 
 .eventItem {
+    display: grid;
+    grid-template-areas: 
+    'title deleteBtn'
+    'date delteBtn';
+    grid-template-columns: 90% 10%;
+
     margin-top: 20px;
     margin-bottom: 20px;
 
@@ -238,8 +274,8 @@ body {
 
     border-radius: 5px;
 
-    display: flex;
-    justify-content: space-between;
+    /*display: flex;
+    justify-content: space-between;*/
 
     color: #EEEEEE;
     background-color: #424242;
@@ -281,23 +317,7 @@ body {
     color: #EEEEEE;
 }
 
-.deleteBtn {
-    background-image: url('Images/deleteBtn.svg');
-    background-size: cover;
-    background-color: #424242;
-    
-    width: 20px;
-    height: 25px;
 
-    margin-top: auto;
-    margin-bottom: auto;
-
-    border: none;
-}
-
-.deleteBtn:hover {
-    background-image: url('Images/deleteBtnHover.svg');
-}
 
 #addEventBtn {
     background-image: url('Images/addBtn.svg');

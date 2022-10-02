@@ -6,6 +6,7 @@ const calendar = document.getElementById('days')
 let seletedDayDiv = 0
 
 const weekdays = ['Monday', 'Tuesday', 'Wendnesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const monthArr =  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
 //loads the calendar grid
 function load() {
@@ -139,16 +140,18 @@ function eventFunc(dayString) {
         todaysEventDIv.classList.add('eventItem')
         document.getElementById('todaysEvent').appendChild(todaysEventDIv)
 
-        const todaysEventDateDiv = document.createElement('div')
-        todaysEventDateDiv.innerText = todaysEvent[i].date
-        //todaysEventDIv.appendChild(todaysEventDateDiv)
-
         const todaysEventTitleDiv = document.createElement('div')
+        todaysEventTitleDiv.classList.add("title")
         todaysEventTitleDiv.innerText = todaysEvent[i].title
         todaysEventDIv.appendChild(todaysEventTitleDiv)
 
+        const todaysEventDateDiv = document.createElement('div')
+        todaysEventDateDiv.classList.add("date")
+        todaysEventDateDiv.innerText =
+        `${getDate("day", todaysEvent[i].date)} ${monthArr[parseInt(getDate("month", todaysEvent[i].date))-1]}`
+        todaysEventDIv.appendChild(todaysEventDateDiv)
+
         const deleteEventBtn = document.createElement('button')
-        //deleteEventBtn.innerText = 'delete'
         deleteEventBtn.classList.add('deleteBtn')
         let todaysEventInt = i
         deleteEventBtn.addEventListener('click', function() {
@@ -176,25 +179,25 @@ function eventFunc(dayString) {
             })
         }
     }
-
-
+    
     for(i=0; i<upcomingEvents.length; i++) {
         const upcomingEventDiv = document.createElement('div')
         upcomingEventDiv.classList.add('eventItem')
-        //upcomingEventDiv.innerText = upcomingEvents[i].title
 
         document.getElementById('upcomingEvents').appendChild(upcomingEventDiv)
 
-        const upcomingEventDateDiv = document.createElement('div')
-        upcomingEventDateDiv.innerText = upcomingEvents[i].date
-        //upcomingEventDiv.appendChild(upcomingEventDateDiv)
-
         const upcomingEventTitleDiv = document.createElement('div')
+        upcomingEventTitleDiv.classList.add("title")
         upcomingEventTitleDiv.innerText = upcomingEvents[i].title   
         upcomingEventDiv.appendChild(upcomingEventTitleDiv)
 
+        const upcomingEventDateDiv = document.createElement('div')
+        upcomingEventDateDiv.classList.add("date")
+        upcomingEventDateDiv.innerText = 
+        `${getDate("day", upcomingEvents[i].date)} ${monthArr[parseInt(getDate("month", upcomingEvents[i].date))-1]}`
+        upcomingEventDiv.appendChild(upcomingEventDateDiv)
+
         const deleteEventBtn = document.createElement('button')
-        //deleteEventBtn.innerText = 'delete'
         deleteEventBtn.classList.add('deleteBtn')
         let upcomingEventInt = i
         deleteEventBtn.addEventListener('click', function() {
@@ -321,7 +324,7 @@ function initDate() {
     selectedDay(dt, eventDay)
 }
 
-//clock in js
+//clock 
 setInterval(showTime, 1000)
 function showTime() {
     const date = new Date()
@@ -332,8 +335,29 @@ function showTime() {
         hours -= 12
     }
 
-    document.getElementById('hours').innerText = `${hours}:`
-    document.getElementById('minutes').innerText = minutes
+    if(hours < 10) {
+        document.getElementById('hours').innerText = `0${hours}:`
+    } else {
+        document.getElementById('hours').innerText = `${hours}:`
+    }
+
+    if(minutes < 10) {
+        document.getElementById('minutes').innerText = `0${minutes}`
+    } else {
+        document.getElementById('minutes').innerText = minutes
+    }
+}
+
+function getDate(type, date) {
+    const dateArr = date.split("/")
+
+    if(type == "day") {
+        return dateArr[0]
+    } else if(type == "month") {
+        return dateArr[1]
+    } if(type == "year") {
+        return dateArr[2]
+    } 
 }
 
 load()
