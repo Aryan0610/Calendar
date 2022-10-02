@@ -16,4 +16,4 @@ This version has updated color scheme and layout. The event manager has also bee
 </br>
 An clock element has been added
 </br>
-The date of the event has been added under the tilte of the events
+The date of the event has been added under the title of the events
