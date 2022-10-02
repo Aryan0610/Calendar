@@ -1,4 +1,4 @@
-Link: [SCalendar](scalendar.tk)
+Link: [SCalendar](http://scalendar.tk)
 
 This is a calendar website with a events mangaer
 
