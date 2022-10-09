@@ -3,19 +3,46 @@
 body {
     font-family: Quicksand, sans-serif;
     background-color: #424242;
+
+    display: grid;
+    grid-template-areas: 
+    'header header'
+    'calendar subContainer'
+    'calendar subContainer';
+    grid-template-columns: 60% 40%;
+
+    margin: 0;
+}
+
+/*header container */
+#header {
+    grid-area: header;
+
+    padding: 10px 20px 10px 30px;
+
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: space-between;
+
+    background-color: #323232;
+}
+
+#title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #EEEEEE;   
+}
+
+#profile {
+    display: none;
 }
 
 /*calendar Container*/
 #calendarContainer {
-    top: 5%;
-    left: 5%;
+    grid-area: calendar;
 
-    position: fixed;
-
-    width: 50%;
-    height: 90%;
-
-    border-radius: 5px;
+    padding: 0px 10px 0px 10px;
 }
 
 #headerContainer {
@@ -27,8 +54,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-
-    height: 10%;
 
     border-radius: 5px;
 
@@ -63,8 +88,46 @@ body {
     display: flex;
 }
 
-#backBtn, #nextBtn {
-    padding: 10px;
+#backBtn {
+    background-image: url('Images/Left\ Arrow.svg');
+    background-size: cover;
+    background-color: #424242;
+
+    width: 50px;
+    height: 50px;
+
+    margin: auto 5px auto 5px;
+
+    display: flex;
+    justify-content: space-around;
+
+    border: none;
+    border-radius: 8px;
+
+    transition: .1s ease-in-out 0s;
+}
+
+#nextBtn {
+    background-image: url('Images/Right\ Arrow.svg');
+    background-size: cover;
+    background-color: #424242;
+
+    width: 50px;
+    height: 50px;
+
+    margin: auto 5px auto 5px;
+
+    display: flex;
+    justify-content: space-around;;
+
+    border: none;
+    border-radius: 8px;
+
+    transition: .1s ease-in-out 0s;
+}
+
+#backBtn:hover, #nextBtn:hover {
+    transform: scale(1.125);
 }
 
 #gridContainer {
@@ -140,8 +203,20 @@ body {
 }
 
 
+/*sub container */ 
+#subContainer {
+    grid-area: subContainer;
+
+    padding: 0px 20px 0px 10px;
+}
+
+#subContainerHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
 /*event container*/
-#eventContainer {
+/*#eventContainer {
     top: 5%;
     right: 5%;
     
@@ -150,12 +225,12 @@ body {
     width: 35%;
     height: 90%;
     overflow-y: hidden;
-}
+}*/
 
 #eventHeader {
     position: relative;
 
-    width: fit-content;
+    width: 45%;
 
     font-size: 25px;
     font-weight: bold;
@@ -167,9 +242,7 @@ body {
     padding-bottom: 10px;
 
     border-radius: 5px;
-
-    color: #323232;
-    background-color: #FFB200;
+    border: none;
 }
 
 #todaysEventsContainer {
@@ -299,7 +372,7 @@ body {
 }
 
 #addEventInput {
-    width: 80%;
+    width: 70%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -314,8 +387,6 @@ body {
     color: #EEEEEE;
 }
 
-
-
 #addEventBtn {
     background-image: url('Images/addBtn.svg');
     background-size: cover;
@@ -329,6 +400,12 @@ body {
 
     border: none;
     border-radius: 5px;
+
+    transition: .1s ease-in-out 0s;
+}
+
+#addEventBtn:hover {
+    transform: scale(1.0625);
 }
 
 ::-webkit-scrollbar {
@@ -345,8 +422,261 @@ body {
     border-radius: 5px;
 }
 
-@media only screen and (max-width: 900px) {
-    body {
-        display: none;
+/*task manger*/
+#taskHeader {
+    position: relative;
+
+    width: 45%;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    padding-left: 20px;
+    padding-right: 20px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    border-radius: 5px;
+    border: none;
+}
+
+#todaysTaskContainer {
+
+    margin-top: 5%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    padding-right: 40px;
+    padding-left: 40px;
+    
+    font-size: 30px;
+
+    border-radius: 5px;
+
+    color: #FFB200;
+    background-color: #323232;
+}
+
+#todaysTask {
+    font-size: 20px;
+
+    height: 20vh;
+    overflow-y: scroll;
+
+    border-radius: 5px;
+}
+
+#upcomingTasksContainer {
+    margin-top: 5%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    padding-right: 40px;
+    padding-left: 40px;
+    
+    font-size: 30px;
+
+    border-radius: 5px;
+
+    color: #FFB200;
+    background-color: #323232;
+}
+
+#upcomingTask {
+    font-size: 20px;
+
+    height: 20vh;
+    overflow-y: scroll;
+
+    border-radius: 5px;
+}
+
+#addTask {
+    margin-top: 5%;
+
+    height: fit-content;
+
+    padding-left: 40px;
+    padding-right: 40px;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+
+    border-radius: 5px;
+    background-color: #323232;
+}
+
+#addTaskInput {
+    width: 70%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+
+    font-size: 15px;
+    letter-spacing: 1px;
+    background-color: #424242;
+}
+
+#addTaskInput:focus {
+    outline: none;
+    color: #EEEEEE;
+}
+
+#addTaskBtn {
+    background-image: url('Images/addBtn.svg');
+    background-size: cover;
+    background-color: #424242;
+    
+    width: 30px;
+    height: 30px;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    border: none;
+    border-radius: 5px;
+
+    transition: .1s ease-in-out 0s;
+}
+
+#addTaskBtn:hover {
+    transform: scale(1.0625);
+}
+
+.notDone {
+    background-image: url('Images/taskNotDone.svg');
+    background-size: cover;
+    background-color: #424242;
+    
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    justify-content: space-around;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    border: none;
+}
+
+.Done {
+    background-image: url('Images/taskDone.svg');
+    background-size: cover;
+    background-color: #424242;
+    
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    justify-content: space-around;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    border: none;
+}
+
+.taskItem {
+    display: grid;
+    grid-template-areas: 
+    'doneBtn title deleteBtn'
+    'doneBtn date delteBtn';
+    grid-template-columns: 15% 75% 10%;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    padding-left: 20px;
+    padding-right: 20px;
+
+    font-weight: 100;
+
+    border-radius: 5px;
+
+    color: #EEEEEE;
+    background-color: #424242;
+}
+
+
+/**/
+.notActive {
+    display: none;
+}
+
+.btnActive {
+    color: #323232;
+    background-color: #FFB200;
+
+    transition: .1s ease-in-out 0s;
+}
+
+.btnNotActive {
+    color: #FFB200;
+    background-color: #323232;
+
+    transition: .1s ease-in-out 0s;
+}
+
+.btnActive:hover, .btnNotActive:hover {
+    transform: scale(1.0625);
+}
+
+@media only screen and (max-width: 800px) {
+ body {
+    display: block;
+ }
+
+ #calendarContainer {
+    padding: 0px 5% 50px 5%;
+ }
+
+ .day {
+    padding: 10px 0px 10px 0px;
+ }
+
+ #subContainer {
+    padding: 0px 5% 50px 5%;
+ }
+}
+
+@media only screen and (max-width: 500px) {
+    #month { font-size: 30px; }
+    #year, #hours, #minutes {font-size: 20px;}
+    #backBtn , #nextBtn {
+        width: 30px;
+        height: 30px;
+    }
+    #weekname {font-size: 15px;}
+    #eventHeader, #taskHeader {font-size: 25px;}
+
+    #eventContent {font-size: 25px;}
+    .eventItem {font-size: 20px;}
+
+    #taskContent {font-size: 25px;}
+    .taskItem {font-size: 20px;}
+    .Done, .notDone {
+        width: 15px;
+        height: 15px;
+
+        margin-right: 10px;
+    }
+
+    .deleteBtn {
+        width: 15px;
+        height: 20px;
+    }
+
+    #addEventInput, #addTaskInput {
+        width: 60%;
     }
 }

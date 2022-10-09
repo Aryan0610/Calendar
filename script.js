@@ -1,6 +1,7 @@
 let monthNav = 0
 let selectedDayInt = 0 
 let eventDay = 0
+let currentDate = 0
 const calendar = document.getElementById('days')
 
 let seletedDayDiv = 0
@@ -16,8 +17,11 @@ function load() {
         date.setMonth(new Date().getMonth()+monthNav)
     }
 
+    let day = date.getDate();
     let month = date.getMonth()
     let year = date.getFullYear()
+
+    currentDate = `${day}/${month+1}/${year}`;
 
     const firstDayOfTheMonth = new Date(year, month, 1)
     const daysInMonth = new Date(year, month+1, 0).getDate()
@@ -77,6 +81,33 @@ function selectedDay(selectedDayInt, dayString) {
     }
 
     eventDay = dayString
+}
+
+/**sub container */
+function activateSubContaier(btn) {
+    if(btn == 'events') {
+        document.getElementById("taskContainer").classList.add('notActive')
+        document.getElementById("eventContainer").classList.remove('notActive')
+
+        document.getElementById("eventHeader").classList.add('btnActive')
+        document.getElementById("taskHeader").classList.remove('btnActive')
+
+        document.getElementById("taskHeader").classList.add('btnNotActive')
+        document.getElementById("eventHeader").classList.remove('btnNotActive')
+    } else if (btn == 'tasks') {
+        document.getElementById("eventContainer").classList.add('notActive')
+        document.getElementById("taskContainer").classList.remove('notActive')
+
+        document.getElementById("taskHeader").classList.add('btnActive')
+        document.getElementById("eventHeader").classList.remove('btnActive')
+
+        document.getElementById("eventHeader").classList.add('btnNotActive')
+        document.getElementById("taskHeader").classList.remove('btnNotActive')
+
+        /**activates taskManger funciotns */
+        showTodaysTask()
+        showUpcomingTasks()
+    }
 }
 
 //adds events to the event menu
@@ -163,7 +194,13 @@ function eventFunc(dayString) {
     let eventsOfTheMonth = eventsOfTheMonthFunc()
     
     for(i=0; i<eventsOfTheMonth.length; i++) {
-        if(`${eventsOfTheMonth[i].day}/${eventsOfTheMonth[i].month}/${eventsOfTheMonth[i].year}` > currentDay) {
+
+        var tempEvent = `${eventsOfTheMonth[i].day}/${eventsOfTheMonth[i].month}/${eventsOfTheMonth[i].year}`
+        var tempEventDay = parseInt(getDate('day', tempEvent))
+        var tempEventMonth = parseInt(getDate('month', tempEvent))
+
+        if((tempEventDay > parseInt(getDate('day', currentDay))) &&
+            (tempEventMonth >= parseInt(getDate('month', currentDay)))) {
             let upcomingEventDate = `${eventsOfTheMonth[i].day}/${eventsOfTheMonth[i].month}/${eventsOfTheMonth[i].year}`
             let upcomingEventTitle
             for(j=0; j<localStorageEvents.length; j++) {
@@ -178,7 +215,7 @@ function eventFunc(dayString) {
             })
         }
     }
-    
+
     for(i=0; i<upcomingEvents.length; i++) {
         const upcomingEventDiv = document.createElement('div')
         upcomingEventDiv.classList.add('eventItem')
@@ -294,6 +331,220 @@ function removeEventBtn(date, title) {
     eventFunc(eventDay)
 }
 
+/**task manger here */
+
+function removeTaskBtn(date, title) {
+    let localStorageEvents = JSON.parse(localStorage.getItem('tasks'))
+
+    taskToBeDeltedDate = date
+    taskToBeDeltedTitle = title
+
+    for(i=0; i<localStorageEvents.length; i++) {
+        if(localStorageEvents[i].date == taskToBeDeltedDate 
+            && localStorageEvents[i].title == taskToBeDeltedTitle) {
+                localStorageEvents.splice(i, 1)
+                localStorage.setItem('tasks', JSON.stringify(localStorageEvents))
+            }
+    }
+
+    showTodaysTask()
+    showUpcomingTasks()
+}
+
+function changeTaskStatus(date, title) {
+    let localStorageEvents = JSON.parse(localStorage.getItem('tasks'))
+
+    taskDate = date
+    taskTitle = title
+
+    for(i=0; i<localStorageEvents.length; i++) {
+        if(localStorageEvents[i].date == taskDate 
+            && localStorageEvents[i].title == taskTitle) {
+                if(localStorageEvents[i].taskStatus == "notDone") {
+                    localStorageEvents[i].taskStatus = "Done"
+                } else if (localStorageEvents[i].taskStatus == "Done") {
+                    localStorageEvents[i].taskStatus = "notDone"
+                }
+        }
+    }
+
+    localStorage.setItem('tasks', JSON.stringify(localStorageEvents))
+
+    showTodaysTask()
+    showUpcomingTasks()
+}
+
+function showTodaysTask() {
+    if(document.getElementById('todaysTask').hasChildNodes) {
+        var tempArr = document.querySelectorAll(".taskItem")
+        for(var i=0; i<tempArr.length; i++) {
+            tempArr[i].remove()
+        }
+    }
+
+    let localStorageEvents = JSON.parse(localStorage.getItem('tasks'))
+    let todaysTask = new Array()
+    
+    if(localStorageEvents) {
+        for(var i=0; i<localStorageEvents.length; i++) {
+            var todaysTaskDate = localStorageEvents[i].date
+            var todaysTaskTitle = localStorageEvents[i].title
+            var todaysTaskStatus = localStorageEvents[i].taskStatus
+    
+            if(getDate('day', localStorageEvents[i].date) == getDate('day', currentDate) && getDate('month', localStorageEvents[i].date) == getDate('month', currentDate)) {
+              
+                if(todaysTask) {
+                    todaysTask.push({
+                        date: todaysTaskDate,
+                        title: todaysTaskTitle,
+                        taskStatus: todaysTaskStatus
+                    })
+                } else {
+                    todaysTask = [{
+                        date: todaysTaskDate,
+                        title: todaysTaskTitle,
+                        taskStatus: todaysTaskStatus
+                    }]
+                }
+    
+            }
+        }
+    }
+    for(var i=0; i<todaysTask.length; i++) {
+        let todaysTaskInt = i
+
+        const todaysTaskDiv = document.createElement('div')
+        todaysTaskDiv.classList.add('taskItem')
+        document.getElementById('todaysTask').appendChild(todaysTaskDiv)
+
+        const taskDoneBtn = document.createElement('button')
+        taskDoneBtn.classList.add("taskBtn")
+        taskDoneBtn.classList.add(todaysTask[i].taskStatus)
+        taskDoneBtn.addEventListener('click', function() {
+            changeTaskStatus(todaysTask[todaysTaskInt].date, todaysTask[todaysTaskInt].title)
+        })
+        todaysTaskDiv.appendChild(taskDoneBtn)
+
+        const todaysTaskTitleDiv = document.createElement('div')
+        todaysTaskTitleDiv.classList.add("title")
+        todaysTaskTitleDiv.innerText = todaysTask[i].title   
+        todaysTaskDiv.appendChild(todaysTaskTitleDiv)
+
+        const todaysTaskDateDiv = document.createElement('div')
+        todaysTaskDateDiv.classList.add("date")
+        todaysTaskDateDiv.innerText = 
+        `${getDate("day", todaysTask[i].date)} ${monthArr[parseInt(getDate("month", todaysTask[i].date))-1]}`
+        todaysTaskDiv.appendChild(todaysTaskDateDiv)
+
+        const deleteTaskBtn = document.createElement('button')
+        deleteTaskBtn.classList.add('deleteBtn')
+        deleteTaskBtn.addEventListener('click', function() {
+            removeTaskBtn(todaysTask[todaysTaskInt].date, todaysTask[todaysTaskInt].title)
+        })
+        todaysTaskDiv.appendChild(deleteTaskBtn)
+    }
+}
+
+function showUpcomingTasks() {
+    /*if(document.getElementById('todaysTask').hasChildNodes) {
+        var tempArr = document.querySelectorAll(".taskItem")
+        for(var i=0; i<tempArr.length; i++) {
+            tempArr[i].remove()
+        }
+    }*/
+
+    let localStorageEvents = JSON.parse(localStorage.getItem('tasks'))
+    let upcomingTask = new Array()
+    
+    if(localStorageEvents) {
+        for(var i=0; i<localStorageEvents.length; i++) {
+            var upcomingTaskDate = localStorageEvents[i].date
+            var upcomingTaskTitle = localStorageEvents[i].title
+            var upcomingTaskStatus = localStorageEvents[i].taskStatus
+
+            if(getDate('day', localStorageEvents[i].date) < getDate('day', currentDate) && getDate('month', localStorageEvents[i].date) >= getDate('month', currentDate)) {
+                if(upcomingTask) {
+                    upcomingTask.push({
+                        date: upcomingTaskDate,
+                        title: upcomingTaskTitle,
+                        taskStatus: upcomingTaskStatus
+                    })
+                } else {
+                    upcomingTask = [{
+                        date: upcomingTaskDate,
+                        title: upcomingTaskTitle,
+                        taskStatus: upcomingTaskStatus
+                    }]
+                }
+    
+            }
+        }
+    }
+
+    for(var i=0; i<upcomingTask.length; i++) {
+        let upcomingTaskInt = i
+
+        const upcomingTaskDiv = document.createElement('div')
+        upcomingTaskDiv.classList.add('taskItem')
+        document.getElementById('upcomingTask').appendChild(upcomingTaskDiv)
+
+        const taskDoneBtn = document.createElement('button')
+        taskDoneBtn.classList.add("taskBtn")
+        taskDoneBtn.classList.add(upcomingTask[i].taskStatus)
+        taskDoneBtn.addEventListener('click', function() {
+            changeTaskStatus(upcomingTask[upcomingTaskInt].date, upcomingTask[upcomingTaskInt].title)
+        })
+        upcomingTaskDiv.appendChild(taskDoneBtn)
+
+        const upcomingTaskTitleDiv = document.createElement('div')
+        upcomingTaskTitleDiv.classList.add("title")
+        upcomingTaskTitleDiv.innerText = upcomingTask[i].title   
+        upcomingTaskDiv.appendChild(upcomingTaskTitleDiv)
+
+        const upcomingTaskDateDiv = document.createElement('div')
+        upcomingTaskDateDiv.classList.add("date")
+        upcomingTaskDateDiv.innerText = 
+        `${getDate("day", upcomingTask[i].date)} ${monthArr[parseInt(getDate("month", upcomingTask[i].date))-1]}`
+        upcomingTaskDiv.appendChild(upcomingTaskDateDiv)
+
+        const deleteTaskBtn = document.createElement('button')
+        deleteTaskBtn.classList.add('deleteBtn')
+        deleteTaskBtn.addEventListener('click', function() {
+            removeTaskBtn(upcomingTask[upcomingTaskInt].date, upcomingTask[upcomingTaskInt].title)
+        })
+        upcomingTaskDiv.appendChild(deleteTaskBtn)
+    }
+}
+
+function addTaskBtn() {
+    let localStorageEvents = JSON.parse(localStorage.getItem('tasks'))
+
+    var taskText = document.getElementById('addTaskInput').value
+    var taskDate = eventDay
+
+    
+    if(localStorageEvents) {
+        localStorageEvents.push({
+            date: taskDate,
+            title: taskText,
+            taskStatus: "notDone"
+        })
+    } else {
+        localStorageEvents = [{
+            date: taskDate,
+            title: taskText,
+            taskStatus: "notDone"
+        }]
+    }
+
+    document.getElementById('addTaskInput').value = ''
+    localStorage.setItem('tasks', JSON.stringify(localStorageEvents))
+    
+    showTodaysTask()
+    showUpcomingTasks()
+}
+
+
 //initializes the buttons
 function initButtons() {
     document.getElementById('nextBtn').addEventListener('click', ()=> {
@@ -359,6 +610,7 @@ function getDate(type, date) {
     } 
 }
 
+showTime()
 load()
 eventFunc(eventDay)
 initButtons()

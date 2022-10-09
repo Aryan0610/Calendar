@@ -5,9 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
+    <link rel="icon" type="image/x-icon" href="/images/Icon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>  
+<body> 
+    <div id="header">
+        <div id="title">
+            SCalendar
+        </div>
+
+        <button id="profile">
+            Profile
+        </button>
+    </div>
+    
     <div id="calendarContainer">
         <div id="headerContainer">
             <div id="monthAndYear">
@@ -17,12 +28,10 @@
 
             <div id="btnAndTimeContainer">    
                 <div id="btnContainer">
-                    <div class="btn" id="backBtn">
-                        <img src="Images/Left Arrow.svg" alt="Back">
-                    </div>
-                    <div class="btn" id="nextBtn">
-                        <img src="Images/Right Arrow.svg" alt="Next">
-                    </div>         
+                    <button class="btn" id="backBtn">
+                    </button>
+                    <button class="btn" id="nextBtn">
+                    </button>         
                 </div>
 
                 <div id="timeContainer">
@@ -47,37 +56,74 @@
         </div>
     </div>
 
-    <div id="eventContainer">
-        <div id="eventHeader">
-            Events
-        </div>
+    <div id="subContainer">
 
-        <div id="todaysEventsContainer">
-            <div id="eventContent">
-                Todays Events,
-                <div id="todaysEvent">
-
-                </div>
-            </div>
-        </div>
-
-        <div id="upcomingEventsContainer">
-            <div id="eventContent">
-                <div id="upcomingEventHeader">
-                    Upcoming Events,
-                </div>
-                <div id="upcomingEvents">
-
-                </div>
-            </div>
-        </div>
-
-        <div id="addEvent">
-            <input type="text" id="addEventInput" name="add Events" placeholder="type your event">
-            <button id="addEventBtn">
+        <div id="subContainerHeader">
+            <button id="eventHeader" class="btnActive" onclick="activateSubContaier('events')">
+                Events
+            </button>
+            
+            <button id="taskHeader" class="btnNotActive" onclick="activateSubContaier('tasks')">
+                Tasks
             </button>
         </div>
-        <div id="events"></div>
+
+        <div id="eventContainer">
+            <div id="todaysEventsContainer">
+                <div id="eventContent">
+                    Todays Events,
+                    <div id="todaysEvent">
+    
+                    </div>
+                </div>
+            </div>
+    
+            <div id="upcomingEventsContainer">
+                <div id="eventContent">
+                    <div id="upcomingEventHeader">
+                        Upcoming Events,
+                    </div>
+                    <div id="upcomingEvents">
+    
+                    </div>
+                </div>
+            </div>
+    
+            <div id="addEvent">
+                <input type="text" id="addEventInput" name="add Events" placeholder="type your event">
+                <button id="addEventBtn">
+                </button>
+            </div>
+            
+        </div>
+
+        <div id="taskContainer" class="notActive">
+            <div id="todaysTaskContainer">
+                <div id="taskContent">
+                    Todays Tasks,
+                    <div id="todaysTask">
+    
+                    </div>
+                </div>
+            </div>
+
+            <div id="upcomingTasksContainer">
+                <div id="taskContent">
+                    <div id="upcomingTaskHeader">
+                        Upcoming Tasks,
+                    </div>
+                    <div id="upcomingTask">
+    
+                    </div>
+                </div>
+            </div>
+
+            <div id="addTask">
+                <input type="text" id="addTaskInput" name="add Events" placeholder="type your event">
+                <button id="addTaskBtn" onclick="addTaskBtn()">
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
