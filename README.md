@@ -20,6 +20,6 @@ The date of the event has been added under the title of the events
 
 **Calendar Version 3**
 </br>
-This version has been updated to have a task manger. The task manger can also check if the task has been completed or not. An header for the page has also been added.
+This version has been updated to have a task manger. The task manger can also check if the task has been completed or not. An header for the page has also been added. The page has also been made resposive.
 </br>
 ![](Images/md%20images/v3%20ss.png)
