@@ -17,3 +17,9 @@ This version has updated color scheme and layout. The event manager has also bee
 An clock element has been added
 </br>
 The date of the event has been added under the title of the events
+
+**Calendar Version 3**
+</br>
+This version has been updated to have a task manger. The task manger can also check if the task has been completed or not. An header for the page has also been added.
+</br>
+![](Images/md%20images/v3%20ss.png)
